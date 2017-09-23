@@ -1,5 +1,5 @@
 # Milog
-11
+
 一基于 [ Ruby on Rails ](https://github.com/rails/rails) 的个人博客网站. http://hijinhu.me/hijinhu/  
 
 游客账号： Email aguest@hijinhu.me | Password 123456
@@ -129,7 +129,7 @@ rails db:migrate
 rails db:seed
 ```
 
-#### 
+####
 
 至此， 项目可在开发环境中运行
 
