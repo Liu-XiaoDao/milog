@@ -16,7 +16,7 @@
 </div>
 <div class="login-setting">
 	<div class="checkbox">
-		<span class="remember-me"><%= t "login.remember_me" %></span>
+		<span class="remember-me"><%= f.input_field :remember_me, as: :boolean, boolean_style: :inline %><%= t "login.remember_me" %></span>
 	</div>
   <%= link_to t("login.forget_me"), accounts_passwords_forgot_path, class: "forget-me" %>
 </div>
