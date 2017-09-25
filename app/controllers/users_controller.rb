@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :get_user
+  before_action :get_user  #通过userid返回用户
   before_action :check_disabled_user
   before_action :check_signed_in, only: [:drafts, :follow, :unfollow]
   before_action :check_activated, only: [:drafts, :follow, :unfollow]
@@ -32,7 +32,7 @@ class UsersController < ApplicationController
     when 'following'
       @tab = FOLLOWING
       @obj = @user.following.paginate page: params[:page], per_page: 24
-    else 
+    else
       @tab = ARTICLES
       @obj = @user.articles.where(posted: true).paginate page: params[:page], per_page: 20
     end
@@ -93,7 +93,7 @@ class UsersController < ApplicationController
   end
 
   private
-    def get_user
+    def get_user  #拿到用户
       @user = User.find_by username: params[:id]
       render_404 unless @user
     end
@@ -106,6 +106,6 @@ class UsersController < ApplicationController
     def articles_group_by_year(total_articles)
       @articles_total_size = total_articles.size
       @paginated_articles = total_articles.paginate page: params[:page], per_page: 20
-      @articles_by_year = @paginated_articles.to_a.group_by(&:posted_year).map { |year_article| year_article }      
+      @articles_by_year = @paginated_articles.to_a.group_by(&:posted_year).map { |year_article| year_article }
     end
 end
