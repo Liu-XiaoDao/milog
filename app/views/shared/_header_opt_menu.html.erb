@@ -12,8 +12,8 @@
   <li>
     <%= content_tag :a, href: notifications_path do -%>
       <% notify_count = Notification.unread_count(current_user) %>
-      <%= content_tag :id, '', class: 'fa fa-bell', style: "#{ 'color: #eb592c;' if notify_count = 0 }" %>
-      <%= content_tag(:span, notify_count, class: 'badge', style: 'background: #eb592c') if notify_count = 0 %>
+      <%= content_tag :id, '', class: 'fa fa-bell', style: "#{ 'color: #eb592c;' if notify_count > 0 }" %>
+      <%= content_tag(:span, notify_count, class: 'badge', style: 'background: #eb592c') if notify_count > 0 %>
     <% end -%>
   </li>
 
