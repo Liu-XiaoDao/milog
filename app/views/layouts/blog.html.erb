@@ -9,8 +9,8 @@
 
     <%= render 'shared/flash_messages_inner'%>
     <%= yield %>
-    <%= render 'features/back_to_top' %>
-    <%= render 'shared/site_footer' %>
+    <%= render 'features/back_to_top' %> <!--返回顶部-->
+    <%= render 'shared/site_footer' %>  <!--footer-->
     <% end -%>
     <%= render 'features/search_dialog', placeholder_text: t('search_in_blog'), search_url: main_app.search_user_path(@user.username) %>
 

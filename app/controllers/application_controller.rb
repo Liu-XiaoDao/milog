@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
     Time.zone = 'Beijing'
   end
 
-  def render_404
+  def render_404  #404显示页面
     respond_to do |format|
       format.html { render file: "#{Rails.root}/public/404", layout: false, status: :not_found }
     end

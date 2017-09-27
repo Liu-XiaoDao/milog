@@ -12,7 +12,7 @@ module UsersHelper
   end
 
   ## github链接
-  def github_tag(user)
+  def github_tag(user)  #返回github链接
     return if user.blank? || user.github.blank?
     link = "https://github.com/" + user.github
     link_to content_tag(:i, '', class: 'fa fa-github icon'), link
@@ -29,7 +29,7 @@ module UsersHelper
   def email_tag(user)
     return if user.blank? || user.email_public.blank? || user.email.blank?
     link = "mailto: " + user.email
-    link_to content_tag(:i, '', class: 'fa fa-envelope icon'), link     
+    link_to content_tag(:i, '', class: 'fa fa-envelope icon'), link
   end
 
   ## 个人网站
@@ -37,10 +37,10 @@ module UsersHelper
     return if user.blank? || user.website.blank?
     link = user.website !~ /^http/ ? "http://" : ""
     link += user.website
-    link_to content_tag(:i, '', class: 'fa fa-globe icon'), link 
+    link_to content_tag(:i, '', class: 'fa fa-globe icon'), link
   end
 
-  ## 用户状态
+  ## 用户状态   返回用户类型：admin，normal
   def user_state_tag(user)
     return if user.blank?
     return content_tag :span, t("user.normal"), class: 'label label-info' if user.state == 1
@@ -48,10 +48,10 @@ module UsersHelper
   end
 
   ## 关注状态
-  def follow_tag(user)
+  def follow_tag(user)    #传入一个用户，判断是否关注了此用户
     return if user.blank?
     has_followed = signed_in? && current_user.followed?(user)
-    
+
     path = faclass = text = ""
     if has_followed
       path = unfollow_user_path user.username
@@ -68,5 +68,5 @@ module UsersHelper
     content = link_to content, path, method: :post, remote: true, class: 'btn btn-primary btn-block btn-follow', id: 'follow-btn-link'
     raw content
   end
-  
+
 end
