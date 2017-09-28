@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   def set_locale
     supported_locale = %w(zh-CN en)
     if params[:locale] && I18n.locale_available?( params[:locale].to_sym ) && supported_locale.include?( params[:locale] )
-      cookies.permanent[:locale] = params[:locale]
+      cookies.permanent[:locale] = params[:locale]  #cookies.permanent  这个存储的值过期时间为20年，可以认为是永久
     end
     I18n.locale = cookies[:locale] || I18n.default_locale
   end
@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
   def check_admin
     return render_404 if current_user.blank? || !current_user.admin?
   end
-
+  # 看着也是检测是否登录
   def authenticate_user!
     render_404 unless signed_in?
   end

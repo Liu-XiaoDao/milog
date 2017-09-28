@@ -9,26 +9,26 @@ class User < ApplicationRecord
 
   TIPS_USERNAME_FORMAT_MSG = 'USERNAME_FORMAT'
 
-  validates :username, :email, :password, :state, presence: true
-  validates :username, length: { in: 6..25 },
-                       format: { with: USERNAME_FORMAT_REGEXP, message: TIPS_USERNAME_FORMAT_MSG },
-                       uniqueness: { case_sensitive: false }
-  validates :email,    length: { maximum: 255 },
-                       format: { with: EAMIL_FORMAT_REGEXP },
-                       uniqueness: { case_sensitive: false }
-  validates :password, length: { minimum: 6 },
-                       allow_nil: false
-  validate :avatar_size
+  validates :username, :email, :password, :state, presence: true   #这几个变量不能为空
+  validates :username, length: { in: 6..25 }, #长度6-25
+                       format: { with: USERNAME_FORMAT_REGEXP, message: TIPS_USERNAME_FORMAT_MSG }, #用户名格式，若错误返回这个errormessage
+                       uniqueness: { case_sensitive: false }  #唯一性检测，不区分大小写
+  validates :email,    length: { maximum: 255 },  #最长为255
+                       format: { with: EAMIL_FORMAT_REGEXP }, #格式检测
+                       uniqueness: { case_sensitive: false }  #唯一性检测，不区分大小写
+  validates :password, length: { minimum: 6 },  #密码最短6位
+                       allow_nil: false  #为空也不跳过
+  validate :avatar_size    #这个不检测
 
-  has_many :articles,             dependent: :destroy
-  has_many :user_categoryships,   dependent: :destroy
-  has_many :categories,           through: :user_categoryships
-  has_many :pictures,             dependent: :destroy
-  has_many :comments,             dependent: :destroy
-  has_one  :resume,               dependent: :destroy
+  has_many :articles,             dependent: :destroy    #有多篇文章，如果用户被删除，文章也删除
+  has_many :user_categoryships,   dependent: :destroy    #有多个xx，如果用户被删除，xx也删除
+  has_many :categories,           through: :user_categoryships   #通过上面有多个分类
+  has_many :pictures,             dependent: :destroy     #有多张图片，用户删除图片删除
+  has_many :comments,             dependent: :destroy     #有多条评论，删除用户删除评论
+  has_one  :resume,               dependent: :destroy     #一个个人简介，删除也删除
   has_many :holds,                dependent: :destroy
 
-  has_many :followingships,       class_name: 'Usership', 
+  has_many :followingships,       class_name: 'Usership',   #  ????
                                   foreign_key: 'follower_id',
                                   dependent: :destroy
   has_many :following,            through: :followingships, source: :following
@@ -37,16 +37,16 @@ class User < ApplicationRecord
                                   dependent: :destroy
   has_many :followers,            through: :followerships,  source: :follower
 
-  has_many :notifications,        dependent: :destroy
+  has_many :notifications,        dependent: :destroy  #有多条通知，。。。。
 
   # 需引入gem bcrypt
-  has_secure_password
+  has_secure_password #  ????
 
   # 将avatar字段提交至AvatarUploader
-  mount_uploader :avatar, AvatarUploader
+  mount_uploader :avatar, AvatarUploader #  ????
 
-  before_save :downcase_username_and_email
-  after_create :generate_activation_digest, 
+  before_save :downcase_username_and_email      #字面意思是变成小写，保存之前
+  after_create :generate_activation_digest,     #create之后
                :generate_default_category_ship,
                :generate_a_resume,
                :generate_article_and_resume_holds
@@ -79,7 +79,7 @@ class User < ApplicationRecord
   def active
     del_attr_digest :activation
     update_attribute :activated, true
-    update_attribute :activated_at, Time.zone.now      
+    update_attribute :activated_at, Time.zone.now
   end
 
   # 生成激活字段, 记录用户状态
@@ -110,7 +110,7 @@ class User < ApplicationRecord
 
   # 用户发布文章所用的标签
   def tags
-    Tag.find_by_sql [ 
+    Tag.find_by_sql [
       " SELECT  DISTINCT tags.id, tags.name
         FROM    users, articles, article_tagships, tags
         WHERE   users.id = ?
@@ -140,13 +140,13 @@ class User < ApplicationRecord
   # 当文章等删除时, 可将使用的图片一起删除
   def post_cache_pictures_in(name, picturable)
     return if picturable.blank?
-    cache_pictures = pictures.where posted: false 
+    cache_pictures = pictures.where posted: false
     if cache_pictures.any?
       cache_pictures.each do |picture|
         picturable.send("#{name}_pictureships").create picture: picture
       end
       cache_pictures.update_all posted: true
-    end      
+    end
   end
 
   # 定义关联图片方法
@@ -194,6 +194,7 @@ class User < ApplicationRecord
   end
 
   private
+    #用户名邮箱变成小写
     def downcase_username_and_email
       username.downcase!
       email.downcase!
@@ -203,13 +204,13 @@ class User < ApplicationRecord
     def avatar_size
       if avatar.size > 1.megabytes
         errors.add :avatar, I18n.t("errors.avatar_too_big", size: 1)
-      end      
+      end
     end
 
     # 生成与'默认'分类的关系
     def generate_default_category_ship
       category = Category.find_or_create_by name: 'default'
-      self.user_categoryships.create category: category 
+      self.user_categoryships.create category: category
     end
 
     # 生成简历

@@ -4,13 +4,13 @@
   <body>
 
     <%= content_tag :div, class: yield(:bodyclass), id: "#{'blog-container' unless current_controller?(:accounts)}" do -%>
-    <%= render 'shared/blog_header' %>
-    <%= render 'shared/blog_app_header' unless current_controller_and_action?(:users, :show) or current_controller_and_action?(:accounts, :edit) or current_controller?(:notifications) %>
+      <%= render 'shared/blog_header' %> <!--page_header-->
+      <%= render 'shared/blog_app_header' unless current_controller_and_action?(:users, :show) or current_controller_and_action?(:accounts, :edit) or current_controller?(:notifications) %>
 
-    <%= render 'shared/flash_messages_inner'%>
-    <%= yield %>
-    <%= render 'features/back_to_top' %> <!--返回顶部-->
-    <%= render 'shared/site_footer' %>  <!--footer-->
+      <%= render 'shared/flash_messages_inner'%>
+      <%= yield %>
+      <%= render 'features/back_to_top' %> <!--返回顶部-->
+      <%= render 'shared/site_footer' %>  <!--footer-->
     <% end -%>
     <%= render 'features/search_dialog', placeholder_text: t('search_in_blog'), search_url: main_app.search_user_path(@user.username) %>
 

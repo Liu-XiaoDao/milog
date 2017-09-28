@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
-  before_action :check_signed_in, except: [:show]
-  before_action :check_activated, except: [:show]
+  before_action :check_signed_in, except: [:show]   #检查是否登录，未登录跳转到登录页
+  before_action :check_activated, except: [:show]   #检查是否已激活，未激活就提醒
 
   before_action :find_article_by_id, only: [:show, :edit, :update, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
@@ -43,8 +43,9 @@ class ArticlesController < ApplicationController
     set_article_hold_content
   end
 
+  # 发布博客，创建博客
   def create
-    get_current_user_and_categories article_params[:category_id]
+    get_current_user_and_categories article_params[:category_id]   #参数是分类id
     @article = current_user.articles.build article_params
     if @article.save
       @article.str2tags @article.tagstr
@@ -72,10 +73,12 @@ class ArticlesController < ApplicationController
   end
 
   private
+    # 过滤参数
     def article_params
       params.require(:article).permit(:title, :category_id, :content, :content_html, :tagstr)
     end
 
+    # 返回用户和当前要使用的分类和所有分类
     def get_current_user_and_categories(selected_category_id = 1)
       @user = current_user
       @category = current_user.categories.find_by id: selected_category_id
@@ -85,7 +88,7 @@ class ArticlesController < ApplicationController
 
     def find_article_by_id
       @article = Article.find_by_id params[:id]
-      return render_404 unless @article      
+      return render_404 unless @article
     end
 
     def correct_user
@@ -99,7 +102,7 @@ class ArticlesController < ApplicationController
       @tags = @article.tags
     end
 
-    def get_next_or_pre_article 
+    def get_next_or_pre_article
       return unless @user
       return unless @article.posted
       articles = @user.articles.where(posted: true).to_a
