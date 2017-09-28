@@ -1,6 +1,6 @@
 class Category < ApplicationRecord
 
-  validates :name,    uniqueness: { case_sensitive: false },   
+  validates :name,    uniqueness: { case_sensitive: false },
                       length: { maximum: 8 },
                       presence: true
 
@@ -20,12 +20,12 @@ class Category < ApplicationRecord
     articles.where(user: user, posted: true)
   end
 
-  def mname
+  def mname #返回名字
     return I18n.t 'categories.default' if self.name == 'default'
     self.name
   end
 
-  class << self
+  class << self   #定义的是类方法
     # 已有文章使用中的分类
     def used
       _result = self.find_by_sql "
@@ -52,7 +52,8 @@ class Category < ApplicationRecord
   end
 
   private
-    def downcase_name 
+    # 名字变小写
+    def downcase_name
       name.downcase!
     end
 end

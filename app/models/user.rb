@@ -51,19 +51,19 @@ class User < ApplicationRecord
                :generate_a_resume,
                :generate_article_and_resume_holds
 
-  attr_accessor :remember_token, :activation_token, :reset_password_token
+  attr_accessor :remember_token, :activation_token, :reset_password_token    #声明属性
 
-  scope :normal, ->{ where state: 1 }
+  scope :normal, ->{ where state: 1 }   #先过去，这个应该是普通用户
   scope :admin, ->{ where state: 2 }
   scope :disabled, ->{ where state: 0 }
   scope :abled, ->{ where 'state = 1 OR state = 2' }
 
   # 生成对应属性的加密字段digest, 并保留token
   def new_attr_digest(attribute)
-    send "#{attribute}_token=", new_token
-    update_digest attribute, digest_token(send("#{attribute}_token"))
+    send "#{attribute}_token=", new_token    #动态调用这个方法
+    update_digest attribute, digest_token(send("#{attribute}_token"))   #猜的吧属性加密，然后把加密后的复制给属性
   end
-
+  #token和属性置为nil
   def del_attr_digest(attribute)
     send "#{attribute}_token=", nil
     update_digest attribute, nil
@@ -137,7 +137,7 @@ class User < ApplicationRecord
   end
 
   # 关联文章/评论/简介与图片
-  # 当文章等删除时, 可将使用的图片一起删除
+  # 当文章等删除时, 可将使用的图片一起删除      未懂？
   def post_cache_pictures_in(name, picturable)
     return if picturable.blank?
     cache_pictures = pictures.where posted: false
@@ -209,7 +209,7 @@ class User < ApplicationRecord
 
     # 生成与'默认'分类的关系
     def generate_default_category_ship
-      category = Category.find_or_create_by name: 'default'
+      category = Category.find_or_create_by name: 'default'   #这个方法是返回符合给定属性的第一个记录，如果没有则创建然后返回
       self.user_categoryships.create category: category
     end
 
