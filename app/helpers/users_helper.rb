@@ -8,7 +8,7 @@ module UsersHelper
 
   def capitalize_name(user)
     return "" if user.blank?
-    user.username.capitalize
+    user.username.capitalize  #首字母大写方法
   end
 
   ## github链接

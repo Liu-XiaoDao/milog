@@ -43,7 +43,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def blog
+  def blog    #已读
     @articles = @user.articles.where(posted: true).paginate page: params[:page], per_page: 5
   end
 
