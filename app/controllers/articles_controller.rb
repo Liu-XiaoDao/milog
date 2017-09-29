@@ -1,8 +1,8 @@
-class ArticlesController < ApplicationController
+class ArticlesController < ApplicationController  #博客控制器
   before_action :check_signed_in, except: [:show]   #检查是否登录，未登录跳转到登录页
   before_action :check_activated, except: [:show]   #检查是否已激活，未激活就提醒
 
-  before_action :find_article_by_id, only: [:show, :edit, :update, :destroy]
+  before_action :find_article_by_id, only: [:show, :edit, :update, :destroy]    #使用id查出所需的文章
   before_action :correct_user, only: [:edit, :update, :destroy]
 
   before_action :delete_cache_pictures, only: [:new, :edit, :show]
@@ -14,20 +14,20 @@ class ArticlesController < ApplicationController
     redirect_to user_path(current_user.username)
   end
 
-  def show
+  def show   #博客的详情
     if current_user != @article.user && @article.posted.blank?
       return render_404
     end
     get_user_category_and_tags
-    if @article.posted
-      get_next_or_pre_article
+    if @article.posted   #文章是否已经发布
+      get_next_or_pre_article  #拿到前一篇或者下一篇文章（要是有两篇就取两篇）
 
-      @comments = @article.comments
+      @comments = @article.comments   #所有评论
       @comment = Comment.new article: @article
-      @comment_size = @article.comment_count
+      @comment_size = @article.comment_count   #评论数量
 
       @article.view_count += 1
-      @article.save
+      @article.save     #阅读量加1
     end
   end
 
@@ -86,7 +86,7 @@ class ArticlesController < ApplicationController
       @categories = current_user.categories
     end
 
-    def find_article_by_id
+    def find_article_by_id  #查出所需的文章
       @article = Article.find_by_id params[:id]
       return render_404 unless @article
     end
@@ -94,7 +94,7 @@ class ArticlesController < ApplicationController
     def correct_user
       render_404 unless current_user == @article.user
     end
-
+    #应该是拿到文章的分类和标签
     def get_user_category_and_tags
       return if @article.blank?
       @user = @article.user
@@ -133,7 +133,7 @@ class ArticlesController < ApplicationController
         redirect_to root_path
       end
     end
-
+    #名字是删除缓存图片
     def delete_cache_pictures
       if user = current_user
         user.delete_cache_pictures
