@@ -49,3 +49,31 @@ production:
   database: milog_production
 #  username: milog
 #  password: <%= ENV['MILOG_DATABASE_PASSWORD'] %>
+
+
+
+
+
+
+
+#rails实战圣经上面介绍写的
+=begin
+    development:
+      adapter: mysql
+      encoding: utf8mb4
+      database: blog_development
+      username: root
+      password:
+    production:
+      adapter: mysql
+      encoding: utf8mb4
+      database: blog_production
+      username: root
+      password:
+    test:
+      adapter: mysql
+      encoding: utf8mb4
+      database: blog_test
+      username: root
+      password:
+=end

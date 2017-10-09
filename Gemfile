@@ -61,7 +61,7 @@ gem 'rails-settings-cached'
 
 group :development do
   gem 'web-console'
-  gem 'listen', '~> 3.0.5'
+  gem 'listen', '~> 3.0.5'    #这种~>表示前两个不能变但是最后一位可以变
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   # 预览发送邮件

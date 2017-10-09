@@ -4,13 +4,13 @@ Rails.application.configure do
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
-  config.cache_classes = false
+  config.cache_classes = false   #等于false有改动后不用重启服务 器，等于true时有改动要重启
 
   # Do not eager load code on boot.
   config.eager_load = false
 
   # Show full error reports.
-  config.consider_all_requests_local = true
+  config.consider_all_requests_local = true   #原本只有在本地请求时才能看到错误信息，用ture那么只要是在开发环境下有错误都能显示
 
   # Enable/disable caching. By default caching is disabled.
   if Rails.root.join('tmp/caching-dev.txt').exist?
@@ -27,11 +27,11 @@ Rails.application.configure do
   end
 
   # Don't care if the mailer can't send. when value set false
-  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.raise_delivery_errors = true   #为true那么发邮件失败，就抛出异常
 
   config.action_mailer.perform_caching = false
 
-  # Print deprecation notices to the Rails logger.
+  # Print deprecation notices to the Rails logger.  打印弃用通知到Rails日志记录器。
   config.active_support.deprecation = :log
 
   # Raise an error on page load if there are pending migrations.
@@ -52,7 +52,7 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  # Send email settings 
+  # Send email settings
   # local preview by letter_opener gem
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.default_url_options = { host: "http://localhost:3000" }

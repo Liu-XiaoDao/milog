@@ -2,7 +2,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
-  config.cache_classes = true
+  config.cache_classes = true   #把类加载到内存，更改后要重新启动服务器
 
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
@@ -10,7 +10,7 @@ Rails.application.configure do
   # Rake tasks automatically ignore this option for performance.
   config.eager_load = true
 
-  # Full error reports are disabled and caching is turned on.
+  # Full error reports are disabled and caching is turned on.  不同于 development，如果在 production 环境出现例外错误，不会显示程式 call stack 讯息，而是回传 public/500.html 页面。
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
@@ -43,7 +43,7 @@ Rails.application.configure do
   # config.force_ssl = true
 
   # Use the lowest log level to ensure availability of diagnostic information
-  # when problems arise.
+  # when problems arise.我们在 RESTful 应用程式 一章最后介绍了 Logger。这里可以设定 Logger 的层级。默认 production 是 :info，其他则是 :debug
   config.log_level = :debug
 
   # Prepend all log lines with the following tags.
@@ -62,7 +62,7 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
-  # the I18n.default_locale when a translation cannot be found).
+  # the I18n.default_locale when a translation cannot be found).如果 I18n 翻译档找不到，则找用默认语系的文字。我们会在I18n一章详细介绍多国语系功能。
   config.i18n.fallbacks = true
 
   # Send deprecation notices to registered listeners.
@@ -78,13 +78,13 @@ Rails.application.configure do
   if ENV["RAILS_LOG_TO_STDOUT"].present?
     logger           = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter
-    config.logger = ActiveSupport::TaggedLogging.new(logger)
+    config.logger = ActiveSupport::TaggedLogging.new(logger)   #日志记录器可以更换
   end
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  # Send email settings 
+  # Send email settings
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { host: "http://hijinhu.me" }
   config.action_mailer.perform_deliveries = true
