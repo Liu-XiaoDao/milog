@@ -1,4 +1,4 @@
-class Category < ApplicationRecord
+class Category < ApplicationRecord  #yidu 
 
   validates :name,    uniqueness: { case_sensitive: false },
                       length: { maximum: 8 },
